@@ -21,8 +21,8 @@ from shelve import Shelf, _ClosedDict
 from pickle import Pickler, Unpickler
 from collections import abc
 
-path = Path(__file__).parent
-background_tasks = set()
+path: str = Path(__file__).parent
+background_tasks: set[Any] = set()
 
 # Enums
 
@@ -128,7 +128,7 @@ class EntitySpawnType(IntEnum):
 
 # Useful things
 
-def recursive_dictionary_update(d, u):
+def recursive_dictionary_update(d: dict[tuple[Any, Any]], u: dict[tuple[Any, Any]]) -> dict[tuple[Any, Any]]
     """
     Given two dictionaries, update the first one with new values provided by
     the second. Works for nested dictionary sets.
@@ -173,7 +173,7 @@ class DotDict(dict):
     __delattr__ = dict.__delitem__
 
 
-async def detect_overrides(cls, obj):
+async def detect_overrides(cls: type[Any], obj: object) -> set[Any]:
     """
     For each active plugin, check if it wield a packet hook. If it does, add
     make a not of it. Hand back all hooks for a specific packet type when done.
