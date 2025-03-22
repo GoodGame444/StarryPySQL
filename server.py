@@ -10,8 +10,6 @@ from packets import packets
 from pparser import build_packet
 from plugin_manager import PluginManager
 from utilities import path, read_packet, State, Direction, ChatReceiveMode
-from zstd_reader import ZstdFrameReader
-from zstd_writer import ZstdFrameWriter
 
 
 DEBUG = True
@@ -24,17 +22,12 @@ else:
 logger = logging.getLogger('starrypy')
 logger.setLevel(loglevel)
 
-class SwitchToZstdException(Exception):
-    pass
-
 class StarryPyServer:
     """
     Primary server class. Handles all the things.
     """
     def __init__(self, reader, writer, config, factory):
         logger.debug("Initializing connection.")
-        self._reader = ZstdFrameReader(reader, Direction.TO_SERVER) # read packets from client
-        self._writer = ZstdFrameWriter(writer) # writes packets to client
         self._client_reader = None # read packets from server (acting as client)
         self._client_writer = None # write packets to server
         self.factory = factory
@@ -49,14 +42,6 @@ class StarryPyServer:
         self._server_write_future = None
         self._client_write_future = None
         logger.info("Received connection from {}".format(self.client_ip))
-
-    def start_zstd(self):
-        self._reader.enable_zstd()
-        self._client_reader.enable_zstd()
-        self._writer.enable_zstd(skip_packets=1) # skip this packet
-        self._client_writer.enable_zstd()
-        logger.info("Switched to zstd")
-
 
     async def server_loop(self):
         """
@@ -103,9 +88,6 @@ class StarryPyServer:
         """
         (reader, writer) = await asyncio.open_connection(self.config['upstream_host'],
                                                self.config['upstream_port'])
-        
-        self._client_reader = ZstdFrameReader(reader, Direction.TO_CLIENT)
-        self._client_writer = ZstdFrameWriter(writer)
 
         try:
             while True:
