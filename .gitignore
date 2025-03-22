@@ -1,0 +1,64 @@
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+__pycache__
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+.vscode
+
+# Project specific
+/config/player.dat
+/config/player.bak
+/config/player.dir
+/config/player
+/config/*.json
+*config.json
+*.db
+*.db-journal
+*.log
+.idea/
+
+# Cleanup after vim
+*.swp
+*.un~
+.ropeproject/
+
+# Cleanup after Macs
+.DS_Store
+
+#python virtualenv
+virtualenv
+.venv
+
+# dev container
+.devcontainer
